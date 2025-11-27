@@ -2,45 +2,69 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 // Authentication Routes
 
 Route::get('/login', function () {
-    return view('login');
+    return view('auth.login');
 })->name('login');
 
+Route::post('/login', function () {
+    // Handle login logic
+})->name('login.post');
+
+Route::get('/logout', function () {
+    return redirect('/');
+})->name('logout');
+
 Route::get('/register', function () {
-    return view('register');
+    return view('auth.register');
 })->name('register');
 
-Route::get('/resetpassword', function () {
-    return view('resetpassword');
+Route::post('/register', function () {
+    // Handle registration logic
+})->name('register.post');
+
+Route::get('/resetpassword/{uuid?}/{token?}', function ($uuid = null, $token = null) {
+    return view('auth.resetpassword', ['uuid' => $uuid, 'token' => $token]);
 })->name('resetpassword');
 
-Route::get('/verifyemail', function () {
-    return view('verifyemail');
+Route::get('/verifyemail/{uuid}/{token}', function ($uuid, $token) {
+    return view('auth.verifyemail', ['uuid' => $uuid, 'token' => $token]);
 })->name('verifyemail');
 
+Route::get('verifyphone', function () {
+    return view('auth.verifyphone');
+})->name('verifyphone');
+
+
+// Public Routes
+Route::get('/', function () {
+    return view('guest.welcome');
+});
+
+Route::get('/furrycwel', function() {
+    return "Jebać cwela Kacpra Ficonia z ulicy Parkowej 26 w Kobiernicach";
+});
+
+
 // Protected Routes
-
 Route::middleware(['auth'])->group(function () {
-    Route::get('/logout', function () {
-        // Logout logic here
-        return redirect('/');
-    })->name('logout');
-
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+    Route::get('/home', function () {
+        return view('users.home');
+    })->name('home');
 
     Route::get('/profile', function () {
-        return view('profile');
+        return view('users.profile');
     })->name('profile');
 
     Route::get('/matches', function () {
-        return view('matches');
+        return view('users.matches');
     })->name('matches');
+});
+
+// Admin Routes
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/admin', function () {
+        return view('admin.dashboard');
+    })->name('admin.dashboard');
 });
