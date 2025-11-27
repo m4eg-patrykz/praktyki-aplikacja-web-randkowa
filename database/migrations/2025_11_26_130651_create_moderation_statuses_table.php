@@ -16,9 +16,9 @@ return new class extends Migration
         });
 
         DB::table('moderation_statuses')->insert([
-            ['label' => 'Active',  'code' => 'ACTIVE'],
-            ['label' => 'Revoked', 'code' => 'REVOKED'],
-            ['label' => 'Expired', 'code' => 'EXPIRED'],
+            ['label' => 'moderation.status.active',  'code' => 'ACTIVE'],
+            ['label' => 'moderation.status.revoked', 'code' => 'REVOKED'],
+            ['label' => 'moderation.status.expired', 'code' => 'EXPIRED'],
         ]);
     }
 

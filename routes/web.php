@@ -15,40 +15,53 @@ Route::post('/login', function () {
     // Handle login logic
 })->name('login.post');
 
-Route::get('/logout', function () {
-    return redirect('/');
-})->name('logout');
+    // Wylogowanie
+    // (osobiście dałbym POST, ale jak chcesz można też GET)
+    Route::get('/logout', [AuthController::class, 'logout'])
+        ->name('logout')
+        ->middleware('auth');
 
-Route::get('/register', function () {
-    return view('auth.register');
-})->name('register');
+    // Rejestracja
+    Route::get('/register', [AuthController::class, 'showRegisterForm'])
+        ->name('register')
+        ->middleware('guest');
 
-Route::post('/register', function () {
-    // Handle registration logic
-})->name('register.post');
+    Route::post('/register', [AuthController::class, 'register'])
+        ->name('register.post')
+        ->middleware('guest');
 
-Route::get('/resetpassword/{uuid?}/{token?}', function ($uuid = null, $token = null) {
-    return view('auth.resetpassword', ['uuid' => $uuid, 'token' => $token]);
-})->name('resetpassword');
+    // Reset hasła – na razie dalej prosty view (nie masz do tego kontrolera)
+    Route::get('/resetpassword/{uuid?}/{token?}', function ($uuid = null, $token = null) {
+        return view('auth.resetpassword', ['uuid' => $uuid, 'token' => $token]);
+    })->name('resetpassword');
 
-Route::get('/verifyemail/{uuid}/{token}', function ($uuid, $token) {
-    return view('auth.verifyemail', ['uuid' => $uuid, 'token' => $token]);
-})->name('verifyemail');
+    // Weryfikacja maila
+    Route::get('/verifyemail/{uuid}/{token}', function ($uuid, $token) {
+        return view('auth.verifyemail', ['uuid' => $uuid, 'token' => $token]);
+    })->name('verifyemail');
 
-Route::get('verifyphone', function () {
-    return view('auth.verifyphone');
-})->name('verifyphone');
+    // Weryfikacja telefonu
+    Route::get('verifyphone', function () {
+        return view('auth.verifyphone');
+    })->name('verifyphone');
 
 
-// Public Routes
-Route::get('/', function () {
-    return view('guest.welcome');
-});
+    /*
+    |--------------------------------------------------------------------------
+    | PUBLIC ROUTES
+    |--------------------------------------------------------------------------
+    */
 
-Route::get('/furrycwel', function() {
-    return "Jebać cwela Kacpra Ficonia z ulicy Parkowej 26 w Kobiernicach";
-});
+    Route::get('/', function () {
+        return view('guest.welcome');
+    });
 
+
+    /*
+    |--------------------------------------------------------------------------
+    | PROTECTED (ZALOGOWANY USER)
+    |--------------------------------------------------------------------------
+    */
 
 // Protected Routes
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -59,9 +72,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // wszystkie trasy, które mają być dostępne dopiero po kliknięciu w link z maila
 });
 
-    Route::get('/profile', function () {
-        return view('users.profile');
-    })->name('profile');
+        Route::get('/profile', function () {
+            return view('users.profile');
+        })->name('profile');
 
     Route::get('/matches', function () {
         return view('users.matches');

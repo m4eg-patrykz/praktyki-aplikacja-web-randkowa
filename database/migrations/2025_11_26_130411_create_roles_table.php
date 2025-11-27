@@ -17,9 +17,9 @@ return new class extends Migration
         });
 
         DB::table('roles')->insert([
-            ['label' => 'Użytkownik',    'code' => 'USER',  'created_at' => now(), 'updated_at' => now()],
-            ['label' => 'Moderator',     'code' => 'MOD',   'created_at' => now(), 'updated_at' => now()],
-            ['label' => 'Administrator', 'code' => 'ADMIN', 'created_at' => now(), 'updated_at' => now()],
+            ['label' => 'role.user',    'code' => 'USER',  'created_at' => now(), 'updated_at' => now()],
+            ['label' => 'role.moderator',     'code' => 'MOD',   'created_at' => now(), 'updated_at' => now()],
+            ['label' => 'role.administrator', 'code' => 'ADMIN', 'created_at' => now(), 'updated_at' => now()],
         ]);
     }
 

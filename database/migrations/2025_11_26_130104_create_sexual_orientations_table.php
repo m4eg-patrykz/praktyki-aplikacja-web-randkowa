@@ -16,11 +16,11 @@ return new class extends Migration
         });
 
         DB::table('sexual_orientations')->insert([
-            ['label' => 'heterosexual', 'code' => 'HETERO'],
-            ['label' => 'homosexual',   'code' => 'HOMO'],
-            ['label' => 'bisexual',     'code' => 'BI'],
-            ['label' => 'pansexual',    'code' => 'PAN'],
-            ['label' => 'asexual',      'code' => 'ACE'],
+            ['label' => 'orientation.heterosexual', 'code' => 'HETERO'],
+            ['label' => 'orientation.homosexual',   'code' => 'HOMO'],
+            ['label' => 'orientation.bisexual',     'code' => 'BI'],
+            ['label' => 'orientation.pansexual',    'code' => 'PAN'],
+            ['label' => 'orientation.asexual',      'code' => 'ACE'],
         ]);
     }
 
