@@ -16,10 +16,10 @@ return new class extends Migration
         });
 
         DB::table('genders')->insert([
-            ['label' => 'unknown',   'code' => 'U'],
-            ['label' => 'male',      'code' => 'M'],
-            ['label' => 'female',    'code' => 'F'],
-            ['label' => 'nonbinary', 'code' => 'NB'],
+            ['label' => 'gender.unknown',   'code' => 'U'],
+            ['label' => 'gender.male',      'code' => 'M'],
+            ['label' => 'gender.female',    'code' => 'F'],
+            ['label' => 'gender.nonbinary', 'code' => 'NB'],
         ]);
     }
 
