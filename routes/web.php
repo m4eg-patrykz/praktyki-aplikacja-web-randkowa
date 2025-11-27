@@ -1,25 +1,19 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthController;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Http\Request;
 
-// Wszystko w grupie "web" (sesje, cookies, CSRF)
-Route::middleware('web')->group(function () {
 
-    /*
-    |--------------------------------------------------------------------------
-    | AUTH ROUTES
-    |--------------------------------------------------------------------------
-    */
+// Authentication Routes
 
-    // Logowanie
-    Route::get('/login', [AuthController::class, 'showLoginForm'])
-        ->name('login')
-        ->middleware('guest');
+Route::get('/login', function () {
+    return view('auth.login');
+})->name('login');
 
-    Route::post('/login', [AuthController::class, 'login'])
-        ->name('login.post')
-        ->middleware('guest');
+Route::post('/login', function () {
+    // Handle login logic
+})->name('login.post');
 
     // Wylogowanie
     // (osobiście dałbym POST, ale jak chcesz można też GET)
@@ -69,58 +63,83 @@ Route::middleware('web')->group(function () {
     |--------------------------------------------------------------------------
     */
 
-    Route::middleware(['auth'])->group(function () {
+// Protected Routes
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/', function () {
+        return view('dashboard');
+    })->name('dashboard');
 
-        // User home / dashboard
-        // Możesz używać i /home i /dashboard – obie trasy prowadzą do tego samego widoku
-        Route::get('/home', function () {
-            return view('users.home');
-        })->name('home');
-
-        Route::get('/dashboard', function () {
-            return view('users.home');
-        })->name('dashboard');
+    // wszystkie trasy, które mają być dostępne dopiero po kliknięciu w link z maila
+});
 
         Route::get('/profile', function () {
             return view('users.profile');
         })->name('profile');
 
-        Route::get('/matches', function () {
-            return view('users.matches');
-        })->name('matches');
-    });
+    Route::get('/matches', function () {
+        return view('users.matches');
+    })->name('matches');
 
-
-    /*
-    |--------------------------------------------------------------------------
-    | ADMIN ROUTES
-    |--------------------------------------------------------------------------
-    */
-
-    Route::middleware(['web', 'auth'])
-    ->prefix('admin')
-    ->name('admin.')
-    ->group(function () {
-
-        // Dashboard tylko dla ADMIN
-        Route::get('/', function () {
-            return view('admin.dashboard');
-        })->name('dashboard')
-          ->middleware('role:ADMIN');
-
-        // Moderacja – ADMIN + MOD
-        Route::get('/moderation', function () {
-            return view('admin.moderation');
-        })->name('moderation')
-          ->middleware('role:ADMIN|MOD');
-
-        // Zarządzanie użytkownikami – ADMIN
-        Route::get('/users', function () {
-            return view('admin.users');
-        })->name('users')
-          ->middleware('role:ADMIN');
-
-        // cokolwiek dalej...
-    });
-
+// Admin Routes
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/admin', function () {
+        return view('admin.dashboard');
+    })->name('admin.dashboard');
 });
+
+use App\Http\Controllers\AuthController;
+
+Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+Route::post('/login', [AuthController::class, 'login']);
+
+Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
+Route::post('/register', [AuthController::class, 'register']);
+
+
+
+// Ekrany logowania/rejestracji (tylko dla gości – patrz punkt 2)
+Route::middleware('guest')->group(function () {
+    Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+    Route::post('/login', [AuthController::class, 'login']);
+
+    Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
+    Route::post('/register', [AuthController::class, 'register']);
+});
+
+// Strony tylko dla zalogowanych
+Route::middleware('auth')->group(function () {
+    Route::get('/', function () {
+        return view('dashboard'); // np. główny panel
+    })->name('dashboard');
+
+    // tutaj wszystkie inne trasy, które mają być tylko po zalogowaniu
+    // Route::get('/profile', ...);
+    // Route::get('/zamowienia', ...);
+});
+
+// Wylogowanie (też wymaga być zalogowanym)
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
+
+
+// Ekran "sprawdź maila"
+Route::get('/email/verify', function () {
+    return view('auth.verify-email');
+})->middleware('auth')->name('verification.notice');
+
+// Obsługa kliknięcia w link z maila
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    $request->fulfill(); // oznacza email jako zweryfikowany
+
+    return redirect()->route('dashboard'); // gdzie chcesz po weryfikacji
+})->middleware(['auth', 'signed'])->name('verification.verify');
+
+// Ponowne wysłanie maila weryfikacyjnego
+Route::post('/email/verification-notification', function (Request $request) {
+    if ($request->user()->hasVerifiedEmail()) {
+        return redirect()->route('dashboard');
+    }
+
+    $request->user()->sendEmailVerificationNotification();
+
+    return back()->with('status', 'Link weryfikacyjny został wysłany na Twój adres e-mail.');
+})->middleware(['auth', 'throttle:6,1'])->name('verification.send');
