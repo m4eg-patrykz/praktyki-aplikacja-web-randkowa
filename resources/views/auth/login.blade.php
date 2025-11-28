@@ -10,16 +10,18 @@
 
         {{-- E-mail --}}
         <div>
-            <label class="mb-1 block text-sm font-medium" for="email">E-mail</label>
+            <label class="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-200" for="email">
+                E-mail
+            </label>
             <input id="email"
                    type="email"
                    name="email"
                    value="{{ old('email') }}"
                    required
                    autofocus
-                   class="w-full rounded-lg border border-gray-300 bg-gray-50 px-3 py-2 text-sm
+                   class="w-full rounded-lg border border-indigo-100 bg-white/90 px-3 py-2 text-sm
                           shadow-sm outline-none transition
-                          focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200
+                          focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200/80
                           dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100
                           dark:focus:border-indigo-400 dark:focus:ring-indigo-500/40">
             @error('email')
@@ -29,16 +31,18 @@
 
         {{-- Hasło --}}
         <div>
-            <label class="mb-1 block text-sm font-medium" for="password">Hasło</label>
+            <label class="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-200" for="password">
+                Hasło
+            </label>
 
             <div class="relative">
                 <input id="password"
                        type="password"
                        name="password"
                        required
-                       class="w-full rounded-lg border border-gray-300 bg-gray-50 px-3 py-2 text-sm pr-12
+                       class="w-full rounded-lg border border-indigo-100 bg-white/90 px-3 py-2 text-sm pr-12
                               shadow-sm outline-none transition
-                              focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200
+                              focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200/80
                               dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100
                               dark:focus:border-indigo-400 dark:focus:ring-indigo-500/40">
 
@@ -58,17 +62,22 @@
         {{-- Zapamiętaj --}}
         <div class="flex items-center justify-between">
             <label class="inline-flex items-center gap-2 text-xs text-gray-600 dark:text-gray-400">
-                <input type="checkbox" name="remember"
-                    class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 dark:border-gray-600">
+                <input type="checkbox"
+                       name="remember"
+                       class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 dark:border-gray-600">
                 <span>Zapamiętaj mnie</span>
             </label>
         </div>
 
         {{-- Przycisk --}}
         <div class="pt-2">
-            <button type="submit" class="flex w-full justify-center rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-md
-                                   transition hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2
-                                   dark:bg-indigo-500 dark:hover:bg-indigo-400">
+            <button type="submit"
+                    class="flex w-full justify-center rounded-lg 
+                           bg-gradient-to-r from-indigo-600 to-sky-500 
+                           px-4 py-2.5 text-sm font-semibold text-white shadow-md
+                           transition hover:from-indigo-700 hover:to-sky-600
+                           focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2
+                           dark:bg-indigo-500 dark:hover:bg-indigo-400 dark:bg-gradient-to-r dark:from-indigo-500 dark:to-indigo-600">
                 Zaloguj się
             </button>
         </div>
@@ -93,7 +102,8 @@
 
 @section('bottom-link')
     Nie masz jeszcze konta?
-    <a href="{{ route('register') }}" class="font-semibold text-indigo-600 hover:text-indigo-500 dark:text-indigo-400">
+    <a href="{{ route('register') }}"
+       class="font-semibold text-indigo-600 hover:text-indigo-500 dark:text-indigo-400">
         Załóż konto
     </a>
 @endsection

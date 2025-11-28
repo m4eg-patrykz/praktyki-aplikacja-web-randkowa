@@ -57,6 +57,7 @@
                               shadow-sm outline-none transition
                               focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200
                               dark:border-gray-600 dark:bg-gray-900 dark:focus:border-indigo-400 dark:focus:ring-indigo-500/40">
+           
         </div>
 
         {{-- Przycisk --}}
@@ -84,6 +85,8 @@
             }
         }
     </script>
+
+
 
 @endsection
 
