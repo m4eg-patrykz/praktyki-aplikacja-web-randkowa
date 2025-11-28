@@ -1,4 +1,4 @@
-@extends('auth.layout')
+@extends('layouts.auth')
 
 @section('title', 'Potwierdź e-mail')
 @section('heading', 'Potwierdź swój adres e-mail')
@@ -19,7 +19,7 @@
     <form method="POST" action="{{ route('email.verification.send') }}" class="space-y-3">
         @csrf
         <button type="submit" class="w-full rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white
-                                   hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-400">
+                                       hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-400">
             Wyślij ponownie link weryfikacyjny
         </button>
     </form>
@@ -28,7 +28,7 @@
         @csrf
         <button type="submit"
             class="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm
-                                   text-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-800">
+                                       text-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-800">
             Wyloguj się
         </button>
     </form>

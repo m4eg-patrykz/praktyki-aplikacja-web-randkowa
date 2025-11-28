@@ -1,7 +1,5 @@
 <!DOCTYPE html>
-<html lang="pl"
-      x-data="themeController()"
-      x-init="initTheme()">
+<html lang="pl" x-data="themeController()" x-init="initTheme()">
 
 <head>
     <meta charset="UTF-8">
@@ -48,16 +46,14 @@
     </script>
 </head>
 
-<body 
-    :class="dark 
+<body :class="dark 
         ? 'min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-gray-100' 
         : 'min-h-screen bg-gradient-to-br from-[#ffffff] via-[#f9f5ff] to-[#f0f7ff] text-gray-800'"
     class="transition-colors duration-500 min-h-screen">
 
 
     {{-- PRZEŁĄCZNIK MOTYWU --}}
-    <button @click="toggleTheme()"
-            class="fixed top-6 right-6 z-50 px-4 py-2 rounded-xl text-sm font-semibold
+    <button @click="toggleTheme()" class="fixed top-6 right-6 z-50 px-4 py-2 rounded-xl text-sm font-semibold
                    bg-white shadow-md hover:shadow-lg text-gray-600
                    dark:bg-gray-700 dark:text-gray-100 dark:hover:bg-gray-600 transition">
         <span x-show="!dark">🌙 Tryb ciemny</span>
@@ -67,4 +63,5 @@
     @yield('content')
 
 </body>
+
 </html>

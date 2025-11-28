@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Auth\Events\Registered;
 
 class AuthController extends Controller
 {
@@ -68,6 +69,8 @@ class AuthController extends Controller
             'password' => Hash::make($data['password']),
         ]);
 
+        event(new Registered($user));
+
         // Możesz od razu zalogować, ale blokujemy dostęp do części panelu przez middleware 'verified'
         Auth::login($user);
 
@@ -81,7 +84,7 @@ class AuthController extends Controller
             return redirect()->route('home');
         }
 
-        //$request->user()->sendEmailVerificationNotification();
+        $request->user()->sendEmailVerificationNotification();
 
         return redirect()
             ->route('email.verification.notice')
