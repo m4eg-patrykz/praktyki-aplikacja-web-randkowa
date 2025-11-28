@@ -11,17 +11,11 @@
         {{-- E-mail --}}
         <div>
             <label class="mb-1 block text-sm font-medium" for="email">E-mail</label>
-            <input id="email"
-                   type="email"
-                   name="email"
-                   value="{{ old('email') }}"
-                   required
-                   autofocus
-                   class="w-full rounded-lg border border-gray-300 bg-gray-50 px-3 py-2 text-sm
-                          shadow-sm outline-none transition
-                          focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200
-                          dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100
-                          dark:focus:border-indigo-400 dark:focus:ring-indigo-500/40">
+            <input id="email" type="email" name="email" value="{{ old('email') }}" required autofocus class="w-full rounded-lg border border-gray-300 bg-gray-50 px-3 py-2 text-sm
+                              shadow-sm outline-none transition
+                              focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200
+                              dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100
+                              dark:focus:border-indigo-400 dark:focus:ring-indigo-500/40">
             @error('email')
                 <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
             @enderror
@@ -32,20 +26,15 @@
             <label class="mb-1 block text-sm font-medium" for="password">Hasło</label>
 
             <div class="relative">
-                <input id="password"
-                       type="password"
-                       name="password"
-                       required
-                       class="w-full rounded-lg border border-gray-300 bg-gray-50 px-3 py-2 text-sm pr-12
-                              shadow-sm outline-none transition
-                              focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200
-                              dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100
-                              dark:focus:border-indigo-400 dark:focus:ring-indigo-500/40">
+                <input id="password" type="password" name="password" required class="w-full rounded-lg border border-gray-300 bg-gray-50 px-3 py-2 text-sm pr-12
+                                  shadow-sm outline-none transition
+                                  focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200
+                                  dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100
+                                  dark:focus:border-indigo-400 dark:focus:ring-indigo-500/40">
 
                 {{-- Ikona pokaż/ukryj --}}
-                <button type="button"
-                        onclick="togglePassword('password', 'togglePasswordIcon')"
-                        class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-300">
+                <button type="button" onclick="togglePassword('password', 'togglePasswordIcon')"
+                    class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-300">
                     <span id="togglePasswordIcon" class="text-xl select-none">👁️</span>
                 </button>
             </div>
@@ -67,8 +56,8 @@
         {{-- Przycisk --}}
         <div class="pt-2">
             <button type="submit" class="flex w-full justify-center rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-md
-                                   transition hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2
-                                   dark:bg-indigo-500 dark:hover:bg-indigo-400">
+                                       transition hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2
+                                       dark:bg-indigo-500 dark:hover:bg-indigo-400">
                 Zaloguj się
             </button>
         </div>

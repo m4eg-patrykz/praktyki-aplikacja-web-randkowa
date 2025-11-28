@@ -49,7 +49,15 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials, $request->boolean('remember'))) {
             $request->session()->regenerate();
-            return redirect()->intended('/home'); // tutaj możesz zmienić na np. /dashboard
+            if (!$request->user()->hasVerifiedEmail()) {
+                return redirect('/email/verify');
+            }
+
+            if (!$request->user()->hasVerifiedPhone()) {
+                return redirect('/phone/verify');
+            }
+
+            return redirect()->route('home'); // tutaj możesz zmienić na np. /dashboard
         }
 
         return back()->withErrors([
@@ -74,8 +82,8 @@ class AuthController extends Controller
         // Możesz od razu zalogować, ale blokujemy dostęp do części panelu przez middleware 'verified'
         Auth::login($user);
 
-        // Przekierowanie do strony z informacją o weryfikacji emaila
-        return redirect()->route('email.verification.send');
+        // Przekierowanie do strony z informacją o weryfikacji emaila   
+        return redirect()->route('email.verification.notice');
     }
 
     public function sendVerifyEmail(Request $request)

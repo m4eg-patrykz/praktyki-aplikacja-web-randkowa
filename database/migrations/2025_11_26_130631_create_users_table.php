@@ -18,7 +18,7 @@ return new class extends Migration {
             $table->dateTime('email_verified_at')->nullable();
             $table->string('password', 255);
 
-            $table->string('phone_code', 3)->nullable();
+            $table->string('phone_country_code', 3)->nullable();
             $table->string('phone_number', 20)->nullable();
             $table->dateTime('phone_verified_at')->nullable();
 

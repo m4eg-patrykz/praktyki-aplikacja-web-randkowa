@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\EmailVerifyController;
+use App\Http\Controllers\PhoneVerifyController;
 
 
 // Authentication Routes
@@ -14,43 +16,39 @@ Route::middleware('guest')->group(function () {
     Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
     Route::post('/register', [AuthController::class, 'register']);
 });
+
 Route::middleware('auth')->group(function () {
-    Route::match(['get', 'post'], '/logout', [AuthController::class, 'logout'])->name('logout');
 
-    Route::group(
-        ['prefix' => ''],
-        function () {
+    Route::match(['get', 'post'], '/logout', [AuthController::class, 'logout'])
+        ->name('logout');
 
-        }
-    )->prefix('email');
     // Strona informująca o konieczności weryfikacji emaila
-    Route::get('/email/verify', [AuthController::class, 'showEmailVerify'])
-        ->middleware('auth')
+    Route::get('/email/verify', [EmailVerifyController::class, 'notice'])
         ->name('email.verification.notice');
 
     // Ponowne wysłanie maila weryfikacyjnego
-    Route::post('/email/verify', [AuthController::class, 'sendVerifyEmail'])
-        ->middleware('auth')->name('email.verification.send');
+    Route::post('/email/send-link', [EmailVerifyController::class, 'send'])
 
-    Route::get('/phone/verify', function () {
-        return view('auth.verifyphone');
-    })->name('phone.verification.notice');
+        ->name('email.verification.send');
 
-    Route::post('/phone/verify', function (Request $request) {
-        // Logika wysyłania kodu weryfikacyjnego na telefon
-        return redirect()
-            ->route('phone.verification.notice')
-            ->with('status', 'verification-code-sent')
-            ->with('message', 'Kod weryfikacyjny został wysłany na Twój telefon.');
-    })->name('phone.verification.send');
+    // PHONE VERIFY
+    Route::get('/phone/verify', [PhoneVerifyController::class, 'show'])
+        ->name('phone.verification.notice');
+
+    Route::post('/phone/send-code', [PhoneVerifyController::class, 'sendCode'])
+
+        ->name('phone.verification.send');
+
+    Route::post('/phone/check-code', [PhoneVerifyController::class, 'checkCode'])
+        ->name('phone.verification.check');
 });
 
-// Obsługa kliknięcia w link z maila
-Route::get('/email/verify/{uuid}/{hash}', function (EmailVerificationRequest $request) {
-    $request->fulfill(); // oznacza email jako zweryfikowany
 
-    return redirect()->route('home'); // gdzie chcesz po weryfikacji
-})->middleware(['signed'])->name('email.verification.verify');
+// Obsługa kliknięcia w link z maila
+Route::get('/email/verify/{id}/{hash}', [EmailVerifyController::class, 'verify'])
+    ->middleware(['auth', 'signed'])
+    ->name('verification.verify');
+
 
 /*
 |--------------------------------------------------------------------------
@@ -69,7 +67,7 @@ Route::get('/', function () {
 */
 
 // Protected Routes
-Route::middleware(['auth'/*, 'emailverified', 'phoneverified'*/])->group(function () {
+Route::middleware(['auth', 'emailverified', 'phoneverified'])->group(function () {
     Route::get('/home', function () {
         return view('user.dashboard');
     })->name('home');

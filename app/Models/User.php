@@ -76,4 +76,15 @@ class User extends Authenticatable implements MustVerifyEmail
             ->wherePivot('granted', true)
             ->exists();
     }
+
+    public function hasVerifiedPhone()
+    {
+        return !is_null($this->phone_verified_at);
+    }
+
+    public function phoneVerifications()
+    {
+        return $this->hasMany(PhoneVerification::class);
+    }
+
 }
