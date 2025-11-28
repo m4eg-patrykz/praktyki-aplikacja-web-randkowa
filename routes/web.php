@@ -59,8 +59,8 @@ Route::get('/email/verify/{uuid}/{hash}', function (EmailVerificationRequest $re
 */
 
 Route::get('/', function () {
-    return view('guest.welcome');
-});
+    return view('guest.landing');
+})->middleware('guest')->name('landing');
 
 /*
 |--------------------------------------------------------------------------
