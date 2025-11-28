@@ -11,7 +11,6 @@
         {{-- E-mail --}}
         <div>
             <label class="mb-1 block text-sm font-medium" for="email">E-mail</label>
-<<<<<<< HEAD
             <input id="email"
                    type="email"
                    name="email"
@@ -23,13 +22,6 @@
                           focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200
                           dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100
                           dark:focus:border-indigo-400 dark:focus:ring-indigo-500/40">
-=======
-            <input id="email" type="email" name="email" value="{{ old('email') }}" required autofocus
-                class="w-full rounded-lg border border-gray-300 bg-gray-50 px-3 py-2 text-sm
-                                  shadow-sm outline-none transition
-                                  focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200
-                                  dark:border-gray-600 dark:bg-gray-900 dark:focus:border-indigo-400 dark:focus:ring-indigo-500/40">
->>>>>>> eeb1c26b47107e56d4fbc700dd1c0a2fa4f1dc10
             @error('email')
                 <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
             @enderror
