@@ -20,7 +20,8 @@
                    class="w-full rounded-lg border border-gray-300 bg-gray-50 px-3 py-2 text-sm
                           shadow-sm outline-none transition
                           focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200
-                          dark:border-gray-600 dark:bg-gray-900 dark:focus:border-indigo-400 dark:focus:ring-indigo-500/40">
+                          dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100
+                          dark:focus:border-indigo-400 dark:focus:ring-indigo-500/40">
             @error('email')
             <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
             @enderror
@@ -29,20 +30,32 @@
         {{-- Hasło --}}
         <div>
             <label class="mb-1 block text-sm font-medium" for="password">Hasło</label>
-            <input id="password"
-                   type="password"
-                   name="password"
-                   required
-                   class="w-full rounded-lg border border-gray-300 bg-gray-50 px-3 py-2 text-sm
-                          shadow-sm outline-none transition
-                          focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200
-                          dark:border-gray-600 dark:bg-gray-900 dark:focus:border-indigo-400 dark:focus:ring-indigo-500/40">
+
+            <div class="relative">
+                <input id="password"
+                       type="password"
+                       name="password"
+                       required
+                       class="w-full rounded-lg border border-gray-300 bg-gray-50 px-3 py-2 text-sm pr-12
+                              shadow-sm outline-none transition
+                              focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200
+                              dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100
+                              dark:focus:border-indigo-400 dark:focus:ring-indigo-500/40">
+
+                {{-- Ikona pokaż/ukryj --}}
+                <button type="button"
+                        onclick="togglePassword('password', 'togglePasswordIcon')"
+                        class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-300">
+                    <span id="togglePasswordIcon" class="text-xl select-none">👁️</span>
+                </button>
+            </div>
+
             @error('password')
             <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
             @enderror
         </div>
 
-        {{-- Zapamiętaj mnie --}}
+        {{-- Zapamiętaj --}}
         <div class="flex items-center justify-between">
             <label class="inline-flex items-center gap-2 text-xs text-gray-600 dark:text-gray-400">
                 <input type="checkbox"
@@ -62,6 +75,22 @@
             </button>
         </div>
     </form>
+
+    {{-- Skrypt pokaz/ukryj --}}
+    <script>
+        function togglePassword(inputId, iconId) {
+            const input = document.getElementById(inputId);
+            const icon = document.getElementById(iconId);
+
+            if (input.type === "password") {
+                input.type = "text";
+                icon.textContent = "🙈"; // ukryte
+            } else {
+                input.type = "password";
+                icon.textContent = "👁️"; // oko
+            }
+        }
+    </script>
 @endsection
 
 @section('bottom-link')
