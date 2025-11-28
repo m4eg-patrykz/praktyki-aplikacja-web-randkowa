@@ -8,42 +8,6 @@
     <form method="POST" action="{{ route('register') }}" class="space-y-4">
         @csrf
 
-        {{-- Imię --}}
-        <div>
-            <label class="mb-1 block text-sm font-medium" for="name">Imię</label>
-            <input id="name"
-                   type="text"
-                   name="name"
-                   value="{{ old('name') }}"
-                   required
-                   autofocus
-                   class="w-full rounded-lg border border-gray-300 bg-gray-50 px-3 py-2 text-sm
-                          shadow-sm outline-none transition
-                          focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200
-                          dark:border-gray-600 dark:bg-gray-900 dark:focus:border-indigo-400 dark:focus:ring-indigo-500/40">
-            @error('name')
-            <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
-            @enderror
-        </div>
-
-        {{-- Nazwisko --}}
-        <div>
-            <label class="mb-1 block text-sm font-medium" for="lastname">Nazwisko</label>
-            <input id="lastname"
-                   type="text"
-                   name="lastname"
-                   value="{{ old('lastname') }}"
-                   required
-                   autofocus
-                   class="w-full rounded-lg border border-gray-300 bg-gray-50 px-3 py-2 text-sm
-                          shadow-sm outline-none transition
-                          focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200
-                          dark:border-gray-600 dark:bg-gray-900 dark:focus:border-indigo-400 dark:focus:ring-indigo-500/40">
-            @error('lastname')
-            <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
-            @enderror
-        </div>
-
         {{-- E-mail --}}
         <div>
             <label class="mb-1 block text-sm font-medium" for="email">E-mail</label>
