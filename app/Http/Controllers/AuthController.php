@@ -19,16 +19,36 @@ class AuthController extends Controller
         return view('auth.register');
     }
 
+    public function showEmailVerify()
+    {
+        return view('auth.verifyemail');
+    }
+
+    public function showPhoneVerify()
+    {
+        return view('auth.verifyphone');
+    }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('login');
+    }
+
     public function login(Request $request)
     {
         $credentials = $request->validate([
-            'email'    => ['required', 'email'],
+            'email' => ['required', 'email'],
             'password' => ['required'],
         ]);
 
         if (Auth::attempt($credentials, $request->boolean('remember'))) {
             $request->session()->regenerate();
-            return redirect()->intended('/'); // tutaj możesz zmienić na np. /dashboard
+            return redirect()->intended('/home'); // tutaj możesz zmienić na np. /dashboard
         }
 
         return back()->withErrors([
@@ -39,36 +59,40 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $data = $request->validate([
-            'name'                  => ['required', 'string', 'max:255'],
-            'email'                 => ['required', 'email', 'max:255', 'unique:users,email'],
-            'password'              => ['required', 'confirmed', 'min:8'],
+            'email' => ['required', 'email', 'max:255', 'unique:users,email'],
+            'password' => ['required', 'confirmed', 'min:8'],
         ]);
 
         $user = User::create([
-    'name'     => $data['name'],
-    'email'    => $data['email'],
-    'password' => Hash::make($data['password']),
-]);
+            'email' => $data['email'],
+            'password' => Hash::make($data['password']),
+        ]);
 
-// Wyślij mail z linkiem weryfikacyjnym
-$user->sendEmailVerificationNotification();
+        // Możesz od razu zalogować, ale blokujemy dostęp do części panelu przez middleware 'verified'
+        Auth::login($user);
 
-// Możesz od razu zalogować, ale blokujemy dostęp do części panelu przez middleware 'verified'
-Auth::login($user);
-
-// Przekierowanie na stronę z info "sprawdź maila"
-return redirect()->route('verification.notice');
+        // Przekierowanie do strony z informacją o weryfikacji emaila
+        return redirect()->route('email.verification.send');
     }
 
+    public function sendVerifyEmail(Request $request)
+    {
+        if ($request->user()->hasVerifiedEmail()) {
+            return redirect()->route('home');
+        }
 
+        //$request->user()->sendEmailVerificationNotification();
 
-public function logout(Request $request)
-{
-    Auth::logout();
+        return redirect()
+            ->route('email.verification.notice')
+            ->with('status', 'verification-link-sent');
+    }
 
-    $request->session()->invalidate();
-    $request->session()->regenerateToken();
-
-    return redirect()->route('login');
-}
+    public function sendVerifyPhone(Request $request)
+    {
+        // Logika wysyłania kodu weryfikacyjnego na telefon
+        return redirect()
+            ->route('phone.verification.notice')
+            ->with('status', 'verification-code-sent');
+    }
 }

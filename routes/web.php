@@ -3,101 +3,10 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
+use App\Http\Controllers\AuthController;
 
 
 // Authentication Routes
-
-Route::get('/login', function () {
-    return view('auth.login');
-})->name('login');
-
-Route::post('/login', function () {
-    // Handle login logic
-})->name('login.post');
-
-    // Wylogowanie
-    // (osobiście dałbym POST, ale jak chcesz można też GET)
-    Route::get('/logout', [AuthController::class, 'logout'])
-        ->name('logout')
-        ->middleware('auth');
-
-    // Rejestracja
-    Route::get('/register', [AuthController::class, 'showRegisterForm'])
-        ->name('register')
-        ->middleware('guest');
-
-    Route::post('/register', [AuthController::class, 'register'])
-        ->name('register.post')
-        ->middleware('guest');
-
-    // Reset hasła – na razie dalej prosty view (nie masz do tego kontrolera)
-    Route::get('/resetpassword/{uuid?}/{token?}', function ($uuid = null, $token = null) {
-        return view('auth.resetpassword', ['uuid' => $uuid, 'token' => $token]);
-    })->name('resetpassword');
-
-    // Weryfikacja maila
-    Route::get('/verifyemail/{uuid}/{token}', function ($uuid, $token) {
-        return view('auth.verifyemail', ['uuid' => $uuid, 'token' => $token]);
-    })->name('verifyemail');
-
-    // Weryfikacja telefonu
-    Route::get('verifyphone', function () {
-        return view('auth.verifyphone');
-    })->name('verifyphone');
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | PUBLIC ROUTES
-    |--------------------------------------------------------------------------
-    */
-
-    Route::get('/', function () {
-        return view('guest.welcome');
-    });
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | PROTECTED (ZALOGOWANY USER)
-    |--------------------------------------------------------------------------
-    */
-
-// Protected Routes
-Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/', function () {
-        return view('dashboard');
-    })->name('dashboard');
-
-    // wszystkie trasy, które mają być dostępne dopiero po kliknięciu w link z maila
-});
-
-        Route::get('/profile', function () {
-            return view('users.profile');
-        })->name('profile');
-
-    Route::get('/matches', function () {
-        return view('users.matches');
-    })->name('matches');
-
-// Admin Routes
-Route::middleware(['auth', 'admin'])->group(function () {
-    Route::get('/admin', function () {
-        return view('admin.dashboard');
-    })->name('admin.dashboard');
-});
-
-use App\Http\Controllers\AuthController;
-
-Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
-Route::post('/login', [AuthController::class, 'login']);
-
-Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
-Route::post('/register', [AuthController::class, 'register']);
-
-
-
-// Ekrany logowania/rejestracji (tylko dla gości – patrz punkt 2)
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
     Route::post('/login', [AuthController::class, 'login']);
@@ -105,41 +14,79 @@ Route::middleware('guest')->group(function () {
     Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
     Route::post('/register', [AuthController::class, 'register']);
 });
-
-// Strony tylko dla zalogowanych
 Route::middleware('auth')->group(function () {
-    Route::get('/', function () {
-        return view('dashboard'); // np. główny panel
-    })->name('dashboard');
+    Route::match(['get', 'post'], '/logout', [AuthController::class, 'logout'])->name('logout');
 
-    // tutaj wszystkie inne trasy, które mają być tylko po zalogowaniu
-    // Route::get('/profile', ...);
-    // Route::get('/zamowienia', ...);
+    Route::group(
+        ['prefix' => ''],
+        function () {
+
+        }
+    )->prefix('email');
+    // Strona informująca o konieczności weryfikacji emaila
+    Route::get('/email/verify', [AuthController::class, 'showEmailVerify'])
+        ->middleware('auth')
+        ->name('email.verification.notice');
+
+    // Ponowne wysłanie maila weryfikacyjnego
+    Route::post('/email/verify', [AuthController::class, 'sendVerifyEmail'])
+        ->middleware('auth')->name('email.verification.send');
+
+    Route::get('/phone/verify', function () {
+        return view('auth.verifyphone');
+    })->name('phone.verification.notice');
+
+    Route::post('/phone/verify', function (Request $request) {
+        // Logika wysyłania kodu weryfikacyjnego na telefon
+        return redirect()
+            ->route('phone.verification.notice')
+            ->with('status', 'verification-code-sent')
+            ->with('message', 'Kod weryfikacyjny został wysłany na Twój telefon.');
+    })->name('phone.verification.send');
 });
 
-// Wylogowanie (też wymaga być zalogowanym)
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
-
-
-// Ekran "sprawdź maila"
-Route::get('/email/verify', function () {
-    return view('auth.verify-email');
-})->middleware('auth')->name('verification.notice');
-
 // Obsługa kliknięcia w link z maila
-Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+Route::get('/email/verify/{uuid}/{hash}', function (EmailVerificationRequest $request) {
     $request->fulfill(); // oznacza email jako zweryfikowany
 
-    return redirect()->route('dashboard'); // gdzie chcesz po weryfikacji
-})->middleware(['auth', 'signed'])->name('verification.verify');
+    return redirect()->route('home'); // gdzie chcesz po weryfikacji
+})->middleware(['signed'])->name('email.verification.verify');
 
-// Ponowne wysłanie maila weryfikacyjnego
-Route::post('/email/verification-notification', function (Request $request) {
-    if ($request->user()->hasVerifiedEmail()) {
-        return redirect()->route('dashboard');
-    }
+/*
+|--------------------------------------------------------------------------
+| PUBLIC ROUTES
+|--------------------------------------------------------------------------
+*/
 
-    $request->user()->sendEmailVerificationNotification();
+Route::get('/', function () {
+    return view('guest.welcome');
+});
 
-    return back()->with('status', 'Link weryfikacyjny został wysłany na Twój adres e-mail.');
-})->middleware(['auth', 'throttle:6,1'])->name('verification.send');
+/*
+|--------------------------------------------------------------------------
+| PROTECTED (ZALOGOWANY USER)
+|--------------------------------------------------------------------------
+*/
+
+// Protected Routes
+Route::middleware(['auth'/*, 'emailverified', 'phoneverified'*/])->group(function () {
+    Route::get('/home', function () {
+        return view('user.dashboard');
+    })->name('home');
+
+    Route::get('/profile', function () {
+        return view('users.profile');
+    })->name('profile');
+
+    Route::get('/matches', function () {
+        return view('users.matches');
+    })->name('matches');
+
+});
+
+// Admin Routes
+Route::middleware(['auth', 'role:admin|mod'])->group(function () {
+    Route::get('/admin', function () {
+        return view('admin.dashboard');
+    })->name('admin.dashboard');
+});

@@ -7,7 +7,6 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 
-
 class User extends Authenticatable implements MustVerifyEmail
 {
     use HasFactory, Notifiable;
@@ -29,6 +28,7 @@ class User extends Authenticatable implements MustVerifyEmail
     ];
 
     protected $casts = [
+        'password' => 'hashed',
         'email_verified_at' => 'datetime',
         'phone_verified_at' => 'datetime',
     ];
@@ -42,12 +42,12 @@ class User extends Authenticatable implements MustVerifyEmail
     // SPRAWDZENIE ROLI (po polu code: USER, MOD, ADMIN)
     public function hasAnyRole(array|string $roles): bool
     {
-        if (! $this->role) {
+        if (!$this->role) {
             return false;
         }
 
         // pozwól podać albo tablicę, albo string "ADMIN|MOD|USER"
-        if (! is_array($roles)) {
+        if (!is_array($roles)) {
             $roles = explode('|', $roles);
         }
 
@@ -65,7 +65,7 @@ class User extends Authenticatable implements MustVerifyEmail
     // SPRAWDZENIE UPRAWNIENIA (po polu code w permissions)
     public function hasPermission(string $permissionCode): bool
     {
-        if (! $this->role) {
+        if (!$this->role) {
             return false;
         }
 
