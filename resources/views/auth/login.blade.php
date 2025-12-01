@@ -14,10 +14,10 @@
                 E-mail
             </label>
             <input id="email" type="email" name="email" value="{{ old('email') }}" required autofocus class="w-full rounded-lg border border-indigo-100 bg-white/90 px-3 py-2 text-sm
-                              shadow-sm outline-none transition
-                              focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200/80
-                              dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100
-                              dark:focus:border-indigo-400 dark:focus:ring-indigo-500/40">
+                                  shadow-sm outline-none transition
+                                  focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200/80
+                                  dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100
+                                  dark:focus:border-indigo-400 dark:focus:ring-indigo-500/40">
             @error('email')
                 <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
             @enderror
@@ -31,10 +31,10 @@
 
             <div class="relative">
                 <input id="password" type="password" name="password" required class="w-full rounded-lg border border-indigo-100 bg-white/90 px-3 py-2 text-sm pr-12
-                                  shadow-sm outline-none transition
-                                  focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200/80
-                                  dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100
-                                  dark:focus:border-indigo-400 dark:focus:ring-indigo-500/40">
+                                      shadow-sm outline-none transition
+                                      focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200/80
+                                      dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100
+                                      dark:focus:border-indigo-400 dark:focus:ring-indigo-500/40">
 
                 {{-- Ikona pokaż/ukryj --}}
                 <button type="button" onclick="togglePassword('password', 'togglePasswordIcon')"
@@ -61,11 +61,11 @@
         <div class="pt-2">
             <button type="submit"
                 class="flex w-full justify-center rounded-lg 
-                               bg-gradient-to-r from-indigo-600 to-sky-500 
-                               px-4 py-2.5 text-sm font-semibold text-white shadow-md
-                               transition hover:from-indigo-700 hover:to-sky-600
-                               focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2
-                               dark:bg-indigo-500 dark:hover:bg-indigo-400 dark:bg-gradient-to-r dark:from-indigo-500 dark:to-indigo-600">
+                                   bg-gradient-to-r from-indigo-600 to-sky-500 
+                                   px-4 py-2.5 text-sm font-semibold text-white shadow-md
+                                   transition hover:from-indigo-700 hover:to-sky-600
+                                   focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2
+                                   dark:bg-indigo-500 dark:hover:bg-indigo-400 dark:bg-gradient-to-r dark:from-indigo-500 dark:to-indigo-600">
                 Zaloguj się
             </button>
         </div>
