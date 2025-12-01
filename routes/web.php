@@ -67,7 +67,7 @@ Route::get('/', function () {
 */
 
 // Protected Routes
-Route::middleware(['auth', 'emailverified', 'phoneverified'])->group(function () {
+Route::middleware(['auth', 'notsuspended', 'emailverified', 'phoneverified'])->group(function () {
     Route::get('/home', function () {
         return view('user.dashboard');
     })->name('home');
