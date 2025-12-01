@@ -33,11 +33,11 @@ class UserController extends Controller
         // lista orientacji
         $orientations = [
             'hetero' => 'Heteroseksualna',
-            'homo'   => 'Homoseksualna',
-            'bi'     => 'Biseksualna',
-            'pan'    => 'Panseksualna',
-            'ace'    => 'Aseksualna',
-            'other'  => 'Inna / nie chcę podawać',
+            'homo' => 'Homoseksualna',
+            'bi' => 'Biseksualna',
+            'pan' => 'Panseksualna',
+            'ace' => 'Aseksualna',
+            'other' => 'Inna / nie chcę podawać',
         ];
 
         // lista zainteresowań
@@ -67,16 +67,16 @@ class UserController extends Controller
         $user = auth()->user();
 
         $orientations = ['hetero', 'homo', 'bi', 'pan', 'ace', 'other'];
-        $genders      = ['M', 'K', 'NB'];
+        $genders = ['M', 'K', 'NB'];
 
         $data = $request->validate([
-            'name'        => ['required', 'string', 'max:255'],
-            'age'         => ['nullable', 'integer', 'min:18', 'max:100'],
-            'gender'      => ['nullable', 'in:'.implode(',', $genders)],
-            'orientation' => ['nullable', 'in:'.implode(',', $orientations)],
-            'interests'   => ['nullable', 'array'],
+            'name' => ['required', 'string', 'max:255'],
+            'age' => ['nullable', 'integer', 'min:18', 'max:100'],
+            'gender' => ['nullable', 'in:' . implode(',', $genders)],
+            'orientation' => ['nullable', 'in:' . implode(',', $orientations)],
+            'interests' => ['nullable', 'array'],
             'interests.*' => ['string', 'max:100'],
-            'avatar'      => ['nullable', 'image', 'max:2048'], // 2MB
+            'avatar' => ['nullable', 'image', 'max:2048'], // 2MB
         ]);
 
         // AVATAR
@@ -89,9 +89,9 @@ class UserController extends Controller
             $user->avatar = $path;
         }
 
-        $user->name        = $data['name'];
-        $user->age         = $data['age'] ?? null;
-        $user->gender      = $data['gender'] ?? null;
+        $user->name = $data['name'];
+        $user->age = $data['age'] ?? null;
+        $user->gender = $data['gender'] ?? null;
         $user->orientation = $data['orientation'] ?? null;
 
         // Zainteresowania jako JSON

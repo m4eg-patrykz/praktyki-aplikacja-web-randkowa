@@ -102,4 +102,22 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return (bool) $this->getActiveSuspension();
     }
+
+    public function hobbies()
+    {
+        return $this->belongsToMany(
+            Hobby::class,
+            'users_hobbys', // nazwa tabeli pivot
+            'user_id',      // klucz w pivot do users
+            'hobby_id'      // klucz w pivot do hobbys
+        );
+    }
+
+    /**
+     * Zwraca kolekcję labeli hobby użytkownika.
+     */
+    public function getHobbyLabels(): \Illuminate\Support\Collection
+    {
+        return $this->hobbies()->pluck('label');
+    }
 }
