@@ -26,6 +26,7 @@ return new class extends Migration {
             $table->string('first_name', 100)->nullable();
             $table->string('last_name', 100)->nullable();
             $table->date('date_of_birth')->nullable();
+            $table->text('bio')->nullable();
 
             $table->foreignId('gender_id')
                 ->nullable()
