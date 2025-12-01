@@ -2,10 +2,29 @@
 
 @section('content')
 
-<div 
-            class="h-screen overflow-hidden text-gray-900 dark:text-gray-100
-           bg-gradient-to-br from-[#ffe4e6] via-[#e0f2fe] to-[#ddd6fe]
-           dark:from-[#020617] dark:via-[#111827] dark:to-[#4c1d95]">
+<div class="h-screen overflow-hidden
+            bg-gradient-to-br from-[#fce7f3] via-[#e0f2fe] to-[#ddd6fe]
+            bg-gradient-to-br from-[#ffe4e6] via-[#e0f2fe] to-[#ddd6fe]
+           dark:from-[#020617] dark:via-[#111827] dark:to-[#4c1d95]
+            text-gray-900 dark:text-gray-100">
+
+{{-- PRZYCISK USTAWIEŃ – ZĘBATKA EMOJI --}}
+<a href="{{ url('/settings') }}"
+   class="fixed top-4 left-4 z-30
+          flex items-center justify-center
+          w-10 h-10 rounded-full
+          bg-white/90 text-gray-700 shadow-md border border-gray-200
+          hover:bg-pink-50 hover:text-pink-600 hover:border-pink-300
+          dark:bg-slate-900/90 dark:text-gray-200 dark:border-slate-700
+          dark:hover:bg-slate-800 dark:hover:text-pink-300 dark:hover:border-pink-500
+          transition">
+    <span class="text-2xl leading-[0]">
+        ⚙️
+    </span>
+</a>
+
+
+
 
 
     {{-- jeden ekran, środek --}}
@@ -102,7 +121,7 @@
                         @enderror
                     </div>
 
-                    {{-- IMIĘ, NAZWISKO, WIEK + BIO W PRAWEJ KOLUMNIE --}}
+                    {{-- IMIĘ, NAZWISKO, WIEK + BIO --}}
                     <div class="grid sm:grid-cols-3 gap-4 md:pl-4">
 
                         {{-- Imię --}}
@@ -139,25 +158,25 @@
                             @enderror
                         </div>
 
-                        {{-- Data urodzenia --}}
-<div>
-    <label for="birth_date" class="mb-1 block text-sm font-medium">Data urodzenia</label>
-    <input id="birth_date"
-           type="date"
-           name="birth_date"
-           value="{{ old('birth_date', $user->birth_date ?? '') }}"
-           class="w-full rounded-lg border border-gray-300 bg-gray-50 px-3 py-2 text-sm
-                  shadow-sm outline-none transition
-                  focus:border-pink-500 focus:ring-2 focus:ring-pink-200
-                  dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100
-                  dark:focus:border-pink-400 dark:focus:ring-pink-500/40">
-    @error('birth_date')
-        <p class="mt-1 text-[11px] text-red-500">{{ $message }}</p>
-    @enderror
-</div>
+                        {{-- Wiek (u Ciebie jeszcze jest, jak chcesz – zamienisz na datę urodzenia) --}}
+                        <div>
+                            <label for="age" class="mb-1 block text-sm font-medium">Wiek</label>
+                            <input id="age"
+                                   type="number"
+                                   name="age"
+                                   min="18" max="100"
+                                   value="{{ old('age', $user->age) }}"
+                                   class="w-full rounded-lg border border-gray-300 bg-gray-50 px-3 py-2 text-sm
+                                          shadow-sm outline-none transition
+                                          focus:border-pink-500 focus:ring-2 focus:ring-pink-200
+                                          dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100
+                                          dark:focus:border-pink-400 dark:focus:ring-pink-500/40">
+                            @error('age')
+                                <p class="mt-1 text-[11px] text-red-500">{{ $message }}</p>
+                            @enderror
+                        </div>
 
-
-                        {{-- BIO – cała szerokość pod nimi --}}
+                        {{-- BIO --}}
                         <div class="sm:col-span-3">
                             <label for="bio" class="mb-1 block text-sm font-medium">Biografia</label>
                             <textarea id="bio"
@@ -176,63 +195,58 @@
                     </div>
                 </section>
 
-{{-- PŁEĆ + INFORMACJA O TRANSPŁCIOWOŚCI --}}
-<section class="space-y-2">
-    <label class="block text-sm font-medium">Płeć</label>
+                {{-- PŁEĆ + CHECKBOX TRANS --}}
+                <section class="space-y-2">
+                    <label class="block text-sm font-medium">Płeć</label>
+                    @php
+                        $gender  = old('gender', $user->gender);
+                        $isTrans = old('is_trans', $user->is_trans ?? false);
+                    @endphp
 
-    @php
-        $gender   = old('gender', $user->gender);
-        $isTrans  = old('is_trans', $user->is_trans ?? false);
-    @endphp
+                    <div class="flex flex-wrap gap-2">
+                        @foreach([
+                            'M'  => 'Mężczyzna',
+                            'K'  => 'Kobieta',
+                            'NB' => 'Niebinarne',
+                        ] as $value => $label)
+                            <label class="inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-[11px] cursor-pointer
+                                           @if($gender === $value)
+                                               border-pink-500 bg-pink-50 text-pink-700
+                                               dark:border-pink-500 dark:bg-pink-900/40 dark:text-pink-100
+                                           @else
+                                               border-gray-300 text-gray-700
+                                               dark:border-gray-700 dark:text-gray-300
+                                           @endif">
+                                <input type="radio"
+                                       name="gender"
+                                       value="{{ $value }}"
+                                       @checked($gender === $value)
+                                       class="h-3 w-3 text-pink-500 focus:ring-pink-500 border-gray-300 dark:border-gray-600">
+                                <span>{{ $label }}</span>
+                            </label>
+                        @endforeach
+                    </div>
 
-    {{-- PŁEĆ: M / K / NB --}}
-    <div class="flex flex-wrap gap-2">
-        @foreach([
-            'M'  => 'Mężczyzna',
-            'K'  => 'Kobieta',
-            'NB' => 'Niebinarne',
-        ] as $value => $label)
-            <label class="inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-[11px] cursor-pointer
-                           @if($gender === $value)
-                               border-pink-500 bg-pink-50 text-pink-700
-                               dark:border-pink-500 dark:bg-pink-900/40 dark:text-pink-100
-                           @else
-                               border-gray-300 text-gray-700
-                               dark:border-gray-700 dark:text-gray-300
-                           @endif">
-                <input type="radio"
-                       name="gender"
-                       value="{{ $value }}"
-                       @checked($gender === $value)
-                       class="h-3 w-3 text-pink-500 focus:ring-pink-500 border-gray-300 dark:border-gray-600">
-                <span>{{ $label }}</span>
-            </label>
-        @endforeach
-    </div>
+                    @error('gender')
+                        <p class="mt-1 text-[11px] text-red-500">{{ $message }}</p>
+                    @enderror
 
-    @error('gender')
-        <p class="mt-1 text-[11px] text-red-500">{{ $message }}</p>
-    @enderror
+                    <div class="mt-2 flex items-center gap-2">
+                        <input type="checkbox"
+                               id="is_trans"
+                               name="is_trans"
+                               value="1"
+                               @checked($isTrans)
+                               class="h-4 w-4 rounded border-gray-300 text-pink-500 focus:ring-pink-500 dark:border-gray-600">
+                        <label for="is_trans" class="text-[11px] text-gray-700 dark:text-gray-300">
+                            Jestem osobą transpłciową
+                        </label>
+                    </div>
 
-    {{-- DODATKOWY CHECKBOX: OSOBA TRANS --}}
-    <div class="mt-2 flex items-center gap-2">
-        <input type="checkbox"
-               id="is_trans"
-               name="is_trans"
-               value="1"
-               @checked($isTrans)
-               class="h-4 w-4 rounded border-gray-300 text-pink-500 focus:ring-pink-500 dark:border-gray-600">
-        <label for="is_trans" class="text-[11px] text-gray-700 dark:text-gray-300">
-            Jestem osobą transpłciową
-        </label>
-    </div>
-
-    @error('is_trans')
-        <p class="mt-1 text-[11px] text-red-500">{{ $message }}</p>
-    @enderror
-</section>
-
-
+                    @error('is_trans')
+                        <p class="mt-1 text-[11px] text-red-500">{{ $message }}</p>
+                    @enderror
+                </section>
 
                 {{-- ORIENTACJA --}}
                 <section class="space-y-2">

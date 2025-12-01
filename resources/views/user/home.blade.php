@@ -1,4 +1,5 @@
-@extends('layouts.guest')
+
+@extends('layouts.user')
 
 @section('content')
 
@@ -161,52 +162,7 @@
 
     </div>
 
-    {{-- DOLNE MENU – FULL WIDTH, RÓŻ JAK OBRAMÓWKA PRZYCISKU --}}
-<nav class="fixed bottom-0 left-0 right-0 z-40
-            bg-pink-200 dark:bg-pink-700
-            border-t border-pink-300/80 dark:border-pink-900/80
-            backdrop-blur-md">
-    <div class="max-w-md mx-auto flex justify-between px-6 py-3 text-xs font-medium
-                text-pink-900 dark:text-white">
-
-        {{-- GŁÓWNA --}}
-        <a href="{{ route('user.home') }}"
-           class="flex flex-col items-center gap-0.5
-                  @if(request()->routeIs('user.home'))
-                      font-semibold
-                  @else
-                      text-pink-800/80 dark:text-white/80
-                  @endif">
-            <span class="text-lg">🏠</span>
-            <span>Główna</span>
-        </a>
-
-        {{-- CZATY --}}
-        <a href="{{ route('user.matches') }}"
-           class="flex flex-col items-center gap-0.5
-                  @if(request()->routeIs('user.matches'))
-                      font-semibold
-                  @else
-                      text-pink-800/80 dark:text-white/80
-                  @endif">
-            <span class="text-lg">💬</span>
-            <span>Czaty</span>
-        </a>
-
-        {{-- PROFIL --}}
-        <a href="{{ route('user.profile') }}"
-           class="flex flex-col items-center gap-0.5
-                  @if(request()->routeIs('user.profile'))
-                      font-semibold
-                  @else
-                      text-pink-800/80 dark:text-white/80
-                  @endif">
-            <span class="text-lg">👤</span>
-            <span>Profil</span>
-        </a>
-
-    </div>
-</nav>
+    
 
 </div>
 
