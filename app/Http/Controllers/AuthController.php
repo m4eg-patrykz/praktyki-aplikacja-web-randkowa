@@ -106,4 +106,7 @@ class AuthController extends Controller
             ->route('phone.verification.notice')
             ->with('status', 'verification-code-sent');
     }
+
+    protected $redirectTo = '/user/dashboard';
+
 }

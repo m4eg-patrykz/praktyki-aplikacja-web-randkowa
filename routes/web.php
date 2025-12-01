@@ -88,3 +88,17 @@ Route::middleware(['auth', 'role:admin|mod'])->group(function () {
         return view('admin.dashboard');
     })->name('admin.dashboard');
 });
+
+Route::middleware(['auth'])->prefix('user')->name('user.')->group(function () {
+    Route::get('/dashboard', [UserController::class, 'dashboard'])->name('dashboard');
+    Route::get('/matches',   [UserController::class, 'matches'])->name('matches');
+    Route::get('/profile', [UserController::class, 'profile'])->name('profile');
+    Route::post('/profile', [UserController::class, 'updateProfile'])->name('profile.update');
+});
+
+
+use App\Http\Controllers\SwipeController;
+
+Route::middleware(['auth'])->group(function () {
+    Route::post('/swipes', [SwipeController::class, 'store'])->name('swipes.store');
+});
