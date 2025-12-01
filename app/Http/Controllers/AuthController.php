@@ -72,7 +72,7 @@ class AuthController extends Controller
                 return redirect('/phone/verify');
             }
 
-            return redirect()->route('home'); // tutaj możesz zmienić na np. /dashboard
+            return redirect()->route('user.home'); // tutaj możesz zmienić na np. /dashboard
         }
 
         return back()->withErrors([
@@ -104,7 +104,7 @@ class AuthController extends Controller
     public function sendVerifyEmail(Request $request)
     {
         if ($request->user()->hasVerifiedEmail()) {
-            return redirect()->route('home');
+            return redirect()->route('user.home');
         }
 
         $request->user()->sendEmailVerificationNotification();

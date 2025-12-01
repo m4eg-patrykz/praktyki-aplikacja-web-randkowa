@@ -53,15 +53,20 @@
 
 
     {{-- PRZEŁĄCZNIK MOTYWU --}}
-    <button @click="toggleTheme()" class="fixed top-6 right-6 z-50 px-4 py-2 rounded-xl text-sm font-semibold
+    <div class="absolute top-4 right-4 z-50 flex items-center gap-4 justify-end">
+        @hasSection('topbar-right')
+            @yield('topbar-right')
+        @endif
+
+        <button @click="toggleTheme()" class="px-4 py-2 rounded-xl text-sm font-semibold
                    bg-white shadow-md hover:shadow-lg text-gray-600
                    dark:bg-gray-700 dark:text-gray-100 dark:hover:bg-gray-600 transition">
-        <span x-show="!dark">🌙 Tryb ciemny</span>
-        <span x-show="dark">☀️ Tryb jasny</span>
-    </button>
+            <span x-show="!dark">🌙 Tryb ciemny</span>
+            <span x-show="dark">☀️ Tryb jasny</span>
+        </button>
+    </div>
 
-    @yield('content')
-
+         @yield('content')
 </body>
 
 </html>

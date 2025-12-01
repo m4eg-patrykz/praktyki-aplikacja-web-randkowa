@@ -93,7 +93,7 @@
                             <div class="mt-auto flex items-center justify-center md:justify-end gap-8 pt-4">
 
                                 {{-- NIE PASUJE --}}
-                                <form method="POST" action="{{ route('swipes.store') }}">
+                                <form method="POST" action="{{ route('user.swipes.store') }}">
                                     @csrf
                                     <input type="hidden" name="target_user_id" value="{{ $profile->id }}">
                                     <input type="hidden" name="decision" value="no">
@@ -111,7 +111,7 @@
                                 </form>
 
                                 {{-- PASUJE --}}
-                                <form method="POST" action="{{ route('swipes.store') }}">
+                                <form method="POST" action="{{ route('user.swipes.store') }}">
                                     @csrf
                                     <input type="hidden" name="target_user_id" value="{{ $profile->id }}">
                                     <input type="hidden" name="decision" value="yes">
@@ -170,9 +170,9 @@
                 text-pink-900 dark:text-white">
 
         {{-- GŁÓWNA --}}
-        <a href="{{ route('user.dashboard') }}"
+        <a href="{{ route('user.home') }}"
            class="flex flex-col items-center gap-0.5
-                  @if(request()->routeIs('user.dashboard'))
+                  @if(request()->routeIs('user.home'))
                       font-semibold
                   @else
                       text-pink-800/80 dark:text-white/80

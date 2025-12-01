@@ -3,21 +3,27 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\User;
 use Illuminate\Support\Facades\Storage;
+use App\Models\User;
 
 class UserController extends Controller
 {
-    public function dashboard()
+    public function home()
     {
         $userId = auth()->id();
 
-        // TODO: logika losowania profilu tak jak już masz
+        // Tu możesz później wstawić logikę losowania profilu
         $profileUser = User::where('id', '!=', $userId)
             ->inRandomOrder()
             ->first();
 
-        return view('user.dashboard', compact('profileUser'));
+        return view('user.home', compact('profileUser'));
+    }
+
+    public function matches()
+    {
+        // Na razie placeholder, żeby route nie wywalał błędu
+        return view('user.matches');
     }
 
     public function profile()
@@ -75,7 +81,6 @@ class UserController extends Controller
 
         // AVATAR
         if ($request->hasFile('avatar')) {
-            // usuń stary jeśli jest
             if ($user->avatar) {
                 Storage::disk('public')->delete($user->avatar);
             }
