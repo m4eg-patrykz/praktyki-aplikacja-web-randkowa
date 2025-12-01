@@ -17,6 +17,7 @@ return new class extends Migration {
             $table->string('email', 255);
             $table->dateTime('email_verified_at')->nullable();
             $table->string('password', 255);
+            $table->rememberToken();
 
             $table->string('phone_country_code', 3)->nullable();
             $table->string('phone_number', 20)->nullable();
