@@ -17,7 +17,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'uuid',
         'email',
         'password',
-        'phone_code',
+        'phone_country_code',
         'phone_number',
         'phone_verified_at',
         'role_id',
@@ -87,5 +87,19 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(PhoneVerification::class);
     }
+    public function suspensions()
+    {
+        return $this->hasMany(UsersSuspension::class, 'user_id');
+    }
+    public function getActiveSuspension(): ?array
+    {
+        $suspension = $this->suspensions()->active()->first();
 
+        return $suspension ? $suspension->toArray() : null;
+    }
+
+    public function hasActiveSuspension(): bool
+    {
+        return (bool) $this->getActiveSuspension();
+    }
 }

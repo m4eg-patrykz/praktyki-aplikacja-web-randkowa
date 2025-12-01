@@ -12,12 +12,13 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
-            'auth' => \App\Http\Middleware\Authenticate::class,
             'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
+            'auth' => \App\Http\Middleware\Authenticate::class,
             'role' => \App\Http\Middleware\RoleVerification::class,
             'permission' => \App\Http\Middleware\PermissionVerification::class,
             'emailverified' => \App\Http\Middleware\EnsureEmailIsVerified::class,
             'phoneverified' => \App\Http\Middleware\EnsurePhoneIsVerified::class,
+            'notsuspended' => \App\Http\Middleware\EnsureUserNotSuspended::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

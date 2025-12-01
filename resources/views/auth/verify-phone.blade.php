@@ -6,15 +6,15 @@
 
 @section('content')
     @if (session('error') === 'wait-before-resend')
-        <div class="mb-4 rounded-lg bg-red-100 px-3 py-2 text-sm text-red-800">
+        <p class="mb-4 rounded-lg bg-red-100 px-3 py-2 text-sm text-red-800">
             Odczekaj chwilę przed ponownym wysłaniem kodu.
-        </div>
+        </p>
     @endif
 
     @if (session('status') === 'phone-verification-completed')
-        <div class="mb-4 rounded-lg bg-green-100 px-3 py-2 text-sm text-green-800">
+        <p class="mb-4 rounded-lg bg-green-100 px-3 py-2 text-sm text-green-800">
             Numer telefonu został dodany do Twojego konta.
-        </div>
+        </p>
 
         <form method="GET" action="{{ route('home') }}" class="space-y-3">
             @csrf
@@ -25,9 +25,9 @@
         </form>
     @elseif (session('status') == 'phone-verification-sent')
         @if (session('error') === 'code-invalid')
-            <div class="mb-4 rounded-lg bg-red-100 px-3 py-2 text-sm text-red-800">
+            <p class="mb-4 rounded-lg bg-red-100 px-3 py-2 text-sm text-red-800">
                 Nieprawidłowy kod weryfikacyjny. Spróbuj ponownie.
-            </div>
+            </p>
         @endif
 
         <p class="mb-4 text-sm text-gray-600 dark:text-gray-300">
@@ -56,13 +56,13 @@
         </form>
     @else
         @if(session('error') === 'no-active-code')
-            <div class="mb-4 rounded-lg bg-red-100 px-3 py-2 text-sm text-red-800">
+            <p class="mb-4 rounded-lg bg-red-100 px-3 py-2 text-sm text-red-800">
                 Brak aktywnego kodu weryfikacyjnego. Proszę poprosić o wysłanie nowego kodu.
-            </div>
+            </p>
         @elseif(session('error') === 'code-expired')
-            <div class="mb-4 rounded-lg bg-red-100 px-3 py-2 text-sm text-red-800">
+            <p class="mb-4 rounded-lg bg-red-100 px-3 py-2 text-sm text-red-800">
                 Kod weryfikacyjny wygasł. Proszę poprosić o wysłanie nowego kodu.
-            </div>
+            </p>
         @endif
 
         <p class="mb-4 text-sm text-gray-600 dark:text-gray-300">

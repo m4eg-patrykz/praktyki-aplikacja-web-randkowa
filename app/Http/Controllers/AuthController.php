@@ -47,6 +47,21 @@ class AuthController extends Controller
             'password' => ['required'],
         ]);
 
+        $user = User::where('email', $credentials['email'])->first();
+
+        if ($user?->hasActiveSuspension()) {
+            $suspension = $user->getActiveSuspension();
+            $expires = $suspension['permanent'] ? 'nigdy' : date('d.m.Y H:i', strtotime($suspension['expires_at']));
+            $reason = $suspension['reason'] ?? 'nieokreślono powodu';
+
+            return back()->withErrors([
+                'suspension' => __('Twoje konto zostało zablokowane za naruszenie wytycznych korzystania z serwisu (:reason). Blokada wygasa :expires', [
+                    'reason' => $reason,
+                    'expires' => $expires,
+                ]),
+            ])->onlyInput('email');
+        }
+
         if (Auth::attempt($credentials, $request->boolean('remember'))) {
             $request->session()->regenerate();
             if (!$request->user()->hasVerifiedEmail()) {
