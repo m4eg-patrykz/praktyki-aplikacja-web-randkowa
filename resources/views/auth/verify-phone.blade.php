@@ -23,19 +23,6 @@
                 Kontynuuj
             </button>
         </form>
-
-        <form method="POST" action="{{ route('phone.verification.check') }}" class="space-y-3">
-            @csrf
-            <input type="text" name="verification_code" placeholder="Kod weryfikacyjny"
-                class="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:focus:border-indigo-400 dark:focus:ring-indigo-400"
-                required>
-
-            <button type="submit"
-                class="w-full rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-400">
-                Zweryfikuj kod
-            </button>
-        </form>
-
     @elseif (session('status') == 'phone-verification-sent')
         @if (session('error') === 'code-invalid')
             <div class="mb-4 rounded-lg bg-red-100 px-3 py-2 text-sm text-red-800">
@@ -68,7 +55,6 @@
             </button>
         </form>
     @else
-
         @if(session('error') === 'no-active-code')
             <div class="mb-4 rounded-lg bg-red-100 px-3 py-2 text-sm text-red-800">
                 Brak aktywnego kodu weryfikacyjnego. Proszę poprosić o wysłanie nowego kodu.

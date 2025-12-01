@@ -18,6 +18,10 @@ class PhoneVerifyController extends Controller
     {
         $user = $request->user();
 
+        if ($user->hasVerifiedPhone()) {
+            return redirect()->route('home');
+        }
+
         // 1. Walidacja osobno kierunkowego i numeru
         $validated = $request->validate([
             'phone_country_code' => ['required', 'string', 'max:5'],
@@ -69,6 +73,11 @@ class PhoneVerifyController extends Controller
 
     public function checkCode(Request $request)
     {
+        $user = $request->user();
+        if ($user->hasVerifiedPhone()) {
+            return redirect()->route('home');
+        }
+
         $validator = Validator::make($request->all(), [
             'verification_code' => ['required', 'digits:6'],
         ]);
@@ -78,7 +87,7 @@ class PhoneVerifyController extends Controller
                 ->with('status', 'phone-verification-sent')
                 ->with('error', 'code-invalid');
         }
-        $user = $request->user();
+
 
         $verification = PhoneVerification::where('user_id', $user->id)
             ->where('verified', false)
