@@ -22,7 +22,7 @@
             Adres e-mail został pomyślnie zweryfikowany.
         </p>
 
-        <form method="GET" action="{{ route('home') }}" class="space-y-3">
+        <form method="GET" action="{{ route('user.home') }}" class="space-y-3">
             @csrf
             <button type="submit"
                 class="w-full rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-400">

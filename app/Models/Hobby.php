@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Hobby extends Model
 {
-    protected $table = 'hobbys'; // bo tak nazywa się tabela w migracji
+    protected $table = 'hobbys';
 
     public $timestamps = false;
 
@@ -14,9 +14,4 @@ class Hobby extends Model
         'label',
         'code',
     ];
-
-    public function getHobbysList()
-    {
-        return $this->hasMany(Hobby::class);
-    }
 }

@@ -32,7 +32,7 @@
 
         {{-- PANEL PROFILU --}}
         <div class="w-full max-w-5xl
-                    bg-white/95 dark:bg-slate-900/95 
+                    bg-white/95 dark:bg-slate-900/95
                     rounded-3xl shadow-[0_18px_45px_rgba(15,23,42,0.25)]
                     border border-white/70 dark:border-slate-800
                     px-6 sm:px-8 py-6 space-y-5">
@@ -204,11 +204,7 @@
                     @endphp
 
                     <div class="flex flex-wrap gap-2">
-                        @foreach([
-                            'M'  => 'Mężczyzna',
-                            'K'  => 'Kobieta',
-                            'NB' => 'Niebinarne',
-                        ] as $value => $label)
+                        @foreach($genders as $value => $label)
                             <label class="inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-[11px] cursor-pointer
                                            @if($gender === $value)
                                                border-pink-500 bg-pink-50 text-pink-700

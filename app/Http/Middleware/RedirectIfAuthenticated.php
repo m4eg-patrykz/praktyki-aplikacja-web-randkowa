@@ -16,7 +16,7 @@ class RedirectIfAuthenticated
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
                 // gdzie rzucić zalogowanego, gdy wchodzi na /login /register
-                return redirect()->route('home');
+                return redirect()->route('user.home');
             }
         }
 

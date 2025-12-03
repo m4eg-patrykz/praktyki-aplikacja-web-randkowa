@@ -12,7 +12,7 @@ return new class extends Migration {
     {
         Schema::create('users_hobbys', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
+            $table->foreignId('user_id')->constrained('users')->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreignId('hobby_id')->constrained('hobbys')->cascadeOnUpdate()->cascadeOnDelete();
 
             $table->unique(['user_id', 'hobby_id']);
