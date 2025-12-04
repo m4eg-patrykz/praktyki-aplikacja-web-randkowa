@@ -19,7 +19,7 @@ class PhoneVerifyController extends Controller
         $user = $request->user();
 
         if ($user->hasVerifiedPhone()) {
-            return redirect()->route('home');
+            return redirect()->route('user.home');
         }
 
         // 1. Walidacja osobno kierunkowego i numeru
@@ -75,7 +75,7 @@ class PhoneVerifyController extends Controller
     {
         $user = $request->user();
         if ($user->hasVerifiedPhone()) {
-            return redirect()->route('home');
+            return redirect()->route('user.home');
         }
 
         $validator = Validator::make($request->all(), [
@@ -116,12 +116,11 @@ class PhoneVerifyController extends Controller
             'verified_at' => now(),
         ]);
 
-        // Zaznaczamy telefon jako zweryfikowany
+        // Oznaczamy telefon jako zweryfikowany w tabeli users
         $user->update([
             'phone_verified_at' => now(),
         ]);
 
-        // Widok ma blok: session('status') === 'phone-verification-completed'
         return redirect()
             ->route('phone.verification.notice')
             ->with('status', 'phone-verification-completed');

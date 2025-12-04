@@ -14,9 +14,9 @@ class UserController extends Controller
     private function getDictionaries()
     {
         return [
-            'genders' => Gender::pluck('code')->toArray(),
-            'orientations' => SexualOrientation::pluck('code')->toArray(),
-            'hobbyCodes' => Hobby::pluck('code')->toArray(),
+            'genderIds' => Gender::pluck('id')->toArray(),
+            'orientationIds' => SexualOrientation::pluck('id')->toArray(),
+            'hobbyIds' => Hobby::pluck('id')->toArray(),
         ];
     }
 
@@ -38,9 +38,9 @@ class UserController extends Controller
     public function profile()
     {
         $user = auth()->user();
-        $genders = Gender::pluck('label', 'code')->toArray();
-        $orientations = SexualOrientation::pluck('label', 'code')->toArray();
-        $interestsList = Hobby::pluck('label', 'code')->toArray();
+        $genders = Gender::pluck('label', 'id')->toArray();
+        $orientations = SexualOrientation::pluck('label', 'id')->toArray();
+        $interestsList = Hobby::pluck('label', 'id')->toArray();
 
         return view('user.profile', compact('user', 'genders', 'orientations', 'interestsList'));
     }
@@ -55,10 +55,11 @@ class UserController extends Controller
             'last_name' => ['required', 'string', 'max:255'],
             'age' => ['required', 'integer', 'min:18', 'max:100'],
             'bio' => ['nullable', 'string', 'max:1000'],
-            'gender' => ['required', 'in:' . implode(',', $dicts['genders'])],
-            'orientation' => ['required', 'in:' . implode(',', $dicts['orientations'])],
+            'gender' => ['required', 'in:' . implode(',', $dicts['genderIds'])],
+            'transgender' => ['nullable', 'boolean'],
+            'orientation' => ['required', 'in:' . implode(',', $dicts['orientationIds'])],
             'interests' => ['nullable', 'array'],
-            'interests.*' => ['in:' . implode(',', $dicts['hobbyCodes'])],
+            'interests.*' => ['in:' . implode(',', $dicts['hobbyIds'])],
             'avatar' => ['nullable', 'image', 'max:2048'],
         ]);
 
@@ -72,10 +73,11 @@ class UserController extends Controller
 
         $user->first_name = $data['first_name'];
         $user->last_name = $data['last_name'];
-        $user->bio = $data['bio'] ?? null;
+        $user->bio = $data['bio'];
         // $user->age = $data['age'] ?? null; zmienione na date_of_birth w migracji
-        // $user->gender = $data['gender'] ?? null; przerobic na relacje one=to-many
-        // $user->orientation = $data['orientation'] ?? null; przerobic na relacje one-to-many
+        $user->gender_id = $data['gender'];
+        $user->transgender = $data['transgender'] ?? false;
+        $user->sexual_orientation_id = $data['orientation'];
         // $user->interests = json_encode($data['interests'] ?? []); przerobic na relacje many-to-many
 
         $user->save();

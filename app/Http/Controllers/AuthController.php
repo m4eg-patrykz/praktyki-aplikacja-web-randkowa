@@ -64,15 +64,8 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials, $request->boolean('remember'))) {
             $request->session()->regenerate();
-            if (!$request->user()->hasVerifiedEmail()) {
-                return redirect('/email/verify');
-            }
 
-            if (!$request->user()->hasVerifiedPhone()) {
-                return redirect('/phone/verify');
-            }
-
-            return redirect()->route('user.home'); // tutaj możesz zmienić na np. /dashboard
+            return redirect()->route('user.home');
         }
 
         return back()->withErrors([
@@ -98,30 +91,7 @@ class AuthController extends Controller
         Auth::login($user);
 
         // Przekierowanie do strony z informacją o weryfikacji emaila   
-        return redirect()->route('email.verification.notice');
+        return redirect()->route('user.home');
     }
-
-    public function sendVerifyEmail(Request $request)
-    {
-        if ($request->user()->hasVerifiedEmail()) {
-            return redirect()->route('user.home');
-        }
-
-        $request->user()->sendEmailVerificationNotification();
-
-        return redirect()
-            ->route('email.verification.notice')
-            ->with('status', 'verification-link-sent');
-    }
-
-    public function sendVerifyPhone(Request $request)
-    {
-        // Logika wysyłania kodu weryfikacyjnego na telefon
-        return redirect()
-            ->route('phone.verification.notice')
-            ->with('status', 'verification-code-sent');
-    }
-
-    protected $redirectTo = '/user/dashboard';
 
 }
