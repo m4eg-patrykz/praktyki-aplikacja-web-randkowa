@@ -53,7 +53,7 @@ class UserController extends Controller
         $data = $request->validate([
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
-            'age' => ['required', 'integer', 'min:18', 'max:100'],
+            'date_of_birth' => ['required', 'date', 'before:-18 years', 'after:-100 years'],
             'bio' => ['nullable', 'string', 'max:1000'],
             'gender' => ['required', 'in:' . implode(',', $dicts['genderIds'])],
             'transgender' => ['nullable', 'boolean'],
@@ -74,7 +74,7 @@ class UserController extends Controller
         $user->first_name = $data['first_name'];
         $user->last_name = $data['last_name'];
         $user->bio = $data['bio'];
-        // $user->age = $data['age'] ?? null; zmienione na date_of_birth w migracji
+        $user->date_of_birth = $data['date_of_birth'];
         $user->gender_id = $data['gender'];
         $user->transgender = $data['transgender'] ?? false;
         $user->sexual_orientation_id = $data['orientation'];
