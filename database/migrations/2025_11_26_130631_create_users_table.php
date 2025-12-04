@@ -23,6 +23,7 @@ return new class extends Migration {
             $table->string('phone_number', 20)->nullable();
             $table->dateTime('phone_verified_at')->nullable();
 
+            $table->longText('avatar')->nullable();
             $table->string('first_name', 100)->nullable();
             $table->string('last_name', 100)->nullable();
             $table->date('date_of_birth')->nullable();

@@ -25,10 +25,7 @@ class EmailVerifyController extends Controller
 
         // Jeśli email już jest zweryfikowany
         if ($user->hasVerifiedEmail()) {
-            if ($user->hasVerifiedPhone()) {
-                return redirect()->route('home');
-            }
-            return redirect()->route('phone.verification.notice');
+            return redirect()->route('user.home');
         }
 
         // Potwierdzenie emaila
@@ -47,10 +44,7 @@ class EmailVerifyController extends Controller
     public function send(Request $request)
     {
         if ($request->user()->hasVerifiedEmail()) {
-            if ($request->user()->hasVerifiedPhone()) {
-                return redirect()->route('home');
-            }
-            return redirect()->route('phone.verification.notice');
+            return redirect()->route('user.home');
         }
 
         $key = 'verify-email:' . $request->user()->id;
