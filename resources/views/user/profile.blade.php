@@ -2,33 +2,29 @@
 
 @section('content')
 
-<div class="h-screen overflow-hidden
+<div class="min-h-screen overflow-y-auto
             bg-gradient-to-br from-[#fce7f3] via-[#e0f2fe] to-[#ddd6fe]
             bg-gradient-to-br from-[#ffe4e6] via-[#e0f2fe] to-[#ddd6fe]
            dark:from-[#020617] dark:via-[#111827] dark:to-[#4c1d95]
             text-gray-900 dark:text-gray-100">
 
-{{-- PRZYCISK USTAWIEŃ – ZĘBATKA EMOJI --}}
-<a href="{{ url('/settings') }}"
-   class="fixed top-4 left-4 z-30
-          flex items-center justify-center
-          w-10 h-10 rounded-full
-          bg-white/90 text-gray-700 shadow-md border border-gray-200
-          hover:bg-pink-50 hover:text-pink-600 hover:border-pink-300
-          dark:bg-slate-900/90 dark:text-gray-200 dark:border-slate-700
-          dark:hover:bg-slate-800 dark:hover:text-pink-300 dark:hover:border-pink-500
-          transition">
-    <span class="text-2xl leading-[0]">
-        ⚙️
-    </span>
-</a>
-
-
-
-
+    {{-- PRZYCISK USTAWIEŃ – ZĘBATKA EMOJI --}}
+    <a href="{{ url('/settings') }}"
+       class="fixed top-4 left-4 z-30
+              flex items-center justify-center
+              w-10 h-10 rounded-full
+              bg-white/90 text-gray-700 shadow-md border border-gray-200
+              hover:bg-pink-50 hover:text-pink-600 hover:border-pink-300
+              dark:bg-slate-900/90 dark:text-gray-200 dark:border-slate-700
+              dark:hover:bg-slate-800 dark:hover:text-pink-300 dark:hover:border-pink-500
+              transition">
+        <span class="text-2xl leading-[0]">
+            ⚙️
+        </span>
+    </a>
 
     {{-- jeden ekran, środek --}}
-    <div class="h-full flex items-center justify-center px-4">
+    <div class="h-full flex items-center justify-center px-4 py-8">
 
         {{-- PANEL PROFILU --}}
         <div class="w-full max-w-5xl
@@ -121,7 +117,7 @@
                         @enderror
                     </div>
 
-                    {{-- IMIĘ, NAZWISKO, WIEK + BIO --}}
+                    {{-- IMIĘ, NAZWISKO, DATA URODZENIA + BIO --}}
                     <div class="grid sm:grid-cols-3 gap-4 md:pl-4">
 
                         {{-- Imię --}}
@@ -158,20 +154,19 @@
                             @enderror
                         </div>
 
-                        {{-- Wiek (u Ciebie jeszcze jest, jak chcesz – zamienisz na datę urodzenia) --}}
+                        {{-- Data urodzenia (zamiast wieku) --}}
                         <div>
-                            <label for="age" class="mb-1 block text-sm font-medium">Wiek</label>
-                            <input id="age"
-                                   type="number"
-                                   name="age"
-                                   min="18" max="100"
-                                   value="{{ old('age', $user->age) }}"
+                            <label for="birth_date" class="mb-1 block text-sm font-medium">Data urodzenia</label>
+                            <input id="birth_date"
+                                   type="date"
+                                   name="birth_date"
+                                   value="{{ old('birth_date', $user->birth_date ?? '') }}"
                                    class="w-full rounded-lg border border-gray-300 bg-gray-50 px-3 py-2 text-sm
                                           shadow-sm outline-none transition
                                           focus:border-pink-500 focus:ring-2 focus:ring-pink-200
                                           dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100
                                           dark:focus:border-pink-400 dark:focus:ring-pink-500/40">
-                            @error('age')
+                            @error('birth_date')
                                 <p class="mt-1 text-[11px] text-red-500">{{ $message }}</p>
                             @enderror
                         </div>
