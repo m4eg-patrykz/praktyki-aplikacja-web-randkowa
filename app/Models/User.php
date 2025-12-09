@@ -102,4 +102,9 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return (bool) $this->getActiveSuspension();
     }
+
+    public function hobbies()
+    {
+        return $this->belongsToMany(Hobby::class, 'users_hobbys');
+    }
 }

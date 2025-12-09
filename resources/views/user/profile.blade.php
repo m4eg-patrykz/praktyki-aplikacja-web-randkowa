@@ -195,7 +195,7 @@
                                     <label class="block text-sm font-medium">Płeć</label>
                                     @php
     $gender = old('gender', $user->gender_id ?? null);
-    $isTrans = old('transgender', $user->transgender ?? false);
+    $transgender = old('transgender', $user->transgender ?? false);
                                     @endphp
 
                                     <div class="flex flex-wrap gap-2">
@@ -227,7 +227,7 @@
                                                id="transgender"
                                                name="transgender"
                                                value="1"
-                                               @checked($isTrans)
+                                               @checked($transgender)
                                                class="h-4 w-4 rounded border-gray-300 text-pink-500 focus:ring-pink-500 dark:border-gray-600">
                                         <label for="transgender" class="text-[11px] text-gray-700 dark:text-gray-300">
                                             Jestem osobą transpłciową
@@ -269,31 +269,31 @@
                                     </p>
 
                                     @php
-    $userInterests = collect(json_decode($user->interests ?? '[]', true));
-    if ($userInterests->isEmpty() && is_array(old('interests'))) {
-        $userInterests = collect(old('interests'));
+    $userHobbies = collect($user->hobbies->pluck('id') ?? []);
+    if ($userHobbies->isEmpty() && is_array(old('hobbies'))) {
+        $userHobbies = collect(old('hobbies'));
     }
                                     @endphp
 
                                     <div class="flex flex-wrap gap-2">
-                                        @foreach($interestsList as $interest)
+                                        @foreach($hobbiesList as $value => $label)
                                             <label class="inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-[11px] cursor-pointer
-                                                           @if($userInterests->contains($interest))
+                                                           @if($userHobbies->contains($value))
                                                                border-pink-500 bg-pink-50 text-pink-700 dark:border-pink-500 dark:bg-pink-900/40 dark:text-pink-100
                                                            @else
                                                                border-gray-300 text-gray-700 dark:border-gray-700 dark:text-gray-300
                                                            @endif">
                                                 <input type="checkbox"
-                                                       name="interests[]"
-                                                       value="{{ $interest }}"
-                                                       @checked($userInterests->contains($interest))
+                                                       name="hobbies[]"
+                                                       value="{{ $value }}"
+                                                       @checked($userHobbies->contains($value))
                                                        class="h-3 w-3 text-pink-500 focus:ring-pink-500 border-gray-300 dark:border-gray-600">
-                                                <span>{{ $interest }}</span>
+                                                <span>{{ $label }}</span>
                                             </label>
                                         @endforeach
                                     </div>
 
-                                    @error('interests')
+                                    @error('hobbies')
                                         <p class="mt-1 text-[11px] text-red-500">{{ $message }}</p>
                                     @enderror
                                 </section>

@@ -14,4 +14,10 @@ class Hobby extends Model
         'label',
         'code',
     ];
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'users_hobbys');
+    }
+
 }

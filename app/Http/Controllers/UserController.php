@@ -40,9 +40,9 @@ class UserController extends Controller
         $user = auth()->user();
         $genders = Gender::pluck('label', 'id')->toArray();
         $orientations = SexualOrientation::pluck('label', 'id')->toArray();
-        $interestsList = Hobby::pluck('label', 'id')->toArray();
+        $hobbiesList = Hobby::pluck('label', 'id')->toArray();
 
-        return view('user.profile', compact('user', 'genders', 'orientations', 'interestsList'));
+        return view('user.profile', compact('user', 'genders', 'orientations', 'hobbiesList'));
     }
 
     public function updateProfile(Request $request)
@@ -58,8 +58,8 @@ class UserController extends Controller
             'gender' => ['required', 'in:' . implode(',', $dicts['genderIds'])],
             'transgender' => ['nullable', 'boolean'],
             'orientation' => ['required', 'in:' . implode(',', $dicts['orientationIds'])],
-            'interests' => ['nullable', 'array'],
-            'interests.*' => ['in:' . implode(',', $dicts['hobbyIds'])],
+            'hobbies' => ['nullable', 'array'],
+            'hobbies.*' => ['in:' . implode(',', $dicts['hobbyIds'])],
             'avatar' => ['nullable', 'image', 'max:2048'],
         ]);
 
@@ -78,7 +78,7 @@ class UserController extends Controller
         $user->gender_id = $data['gender'];
         $user->transgender = $data['transgender'] ?? false;
         $user->sexual_orientation_id = $data['orientation'];
-        // $user->interests = json_encode($data['interests'] ?? []); przerobic na relacje many-to-many
+        $user->hobbies()->sync($data['hobbies'] ?? []);
 
         $user->save();
 
