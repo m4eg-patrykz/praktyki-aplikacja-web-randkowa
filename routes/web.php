@@ -1,5 +1,4 @@
 <?php
-
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
@@ -8,8 +7,7 @@ use App\Http\Controllers\EmailVerifyController;
 use App\Http\Controllers\PhoneVerifyController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SwipeController;
-
-
+use App\Http\Controllers\LangController;
 
 // Authentication Routes
 Route::middleware('guest')->group(function () {
@@ -63,6 +61,9 @@ Route::get('/', function () {
     return view('guest.landing');
 })->middleware('guest')->name('landing');
 
+Route::get('/lang', [LangController::class, 'show'])->name('lang.show');
+Route::get('/lang/{locale}', [LangController::class, 'switch'])->name('lang.switch');
+
 /*
 |--------------------------------------------------------------------------
 | PROTECTED (ZALOGOWANY USER)
@@ -72,7 +73,7 @@ Route::get('/', function () {
 // Protected Routes
 Route::middleware(['auth', 'notsuspended', 'emailverified', 'phoneverified'])->name('user.')->group(function () {
     Route::get('/home', [UserController::class, 'home'])->name('home');
-    Route::get('/matches',   [UserController::class, 'matches'])->name('matches');
+    Route::get('/matches', [UserController::class, 'matches'])->name('matches');
     Route::post('/swipes', [SwipeController::class, 'store'])->name('swipes.store');
     Route::get('/profile', [UserController::class, 'profile'])->name('profile');
     Route::post('/profile', [UserController::class, 'updateProfile'])->name('profile.update');
